@@ -1,6 +1,6 @@
 {
   "name": "@scwar/nestjs-monnify",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A comprehensive NestJS module for integrating with Monnify API",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
