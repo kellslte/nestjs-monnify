@@ -1,10 +1,10 @@
 # @scwar/nestjs-monnify
 
-A comprehensive NestJS module for integrating with the [Monnify API](https://developers.monnify.com/). This package provides a clean, type-safe interface for all Monnify services including collections, disbursements, wallets, and customer verification.
+A comprehensive NestJS module for integrating with the [Monnify API](https://developers.monnify.com/). This package provides a clean, type-safe interface for all Monnify services including collections, disbursements, wallets, customer verification, sub-accounts, invoices, and settlements.
 
 ## Features
 
-- 🚀 **Full Monnify API Coverage** - Collections, Disbursements, Wallets, Verification
+- 🚀 **Full Monnify API Coverage** - Collections, Disbursements, Wallets, Verification, Sub-Accounts, Invoices, Settlements
 - 🔒 **Type Safety** - Full TypeScript support with comprehensive interfaces
 - 🏗️ **NestJS Native** - Built specifically for NestJS applications
 - 🔄 **Automatic Retries** - Configurable retry logic with exponential backoff
@@ -201,6 +201,136 @@ const phone = await monnifyService.verification.verifyPhoneNumber({
 });
 ```
 
+### Sub-Accounts Service
+
+Manage sub-accounts for revenue sharing and split payments.
+
+```typescript
+// Create a sub-account
+const subAccount = await monnifyService.subAccounts.createSubAccount({
+  subAccountCode: 'SUB_001',
+  subAccountName: 'Test Sub Account',
+  email: 'subaccount@example.com',
+  mobileNumber: '+2348012345678',
+  splitPercentage: 10,
+  feePercentage: 2,
+  feeBearer: true,
+  splitType: 'PERCENTAGE',
+  currencyCode: 'NGN',
+  contractCode: 'your-contract-code',
+});
+
+// Get sub-account details
+const details = await monnifyService.subAccounts.getSubAccountDetails('SUB_001');
+
+// Get sub-account balance
+const balance = await monnifyService.subAccounts.getSubAccountBalance('SUB_001');
+
+// Get sub-account transactions
+const transactions = await monnifyService.subAccounts.getSubAccountTransactions({
+  subAccountCode: 'SUB_001',
+  pageSize: 10,
+  pageNumber: 1,
+});
+
+// Deactivate sub-account
+const deactivated = await monnifyService.subAccounts.deactivateSubAccount({
+  subAccountCode: 'SUB_001',
+  reason: 'No longer needed',
+});
+```
+
+### Invoices Service
+
+Create and manage invoices for your customers.
+
+```typescript
+// Create an invoice
+const invoice = await monnifyService.invoices.createInvoice({
+  invoiceReference: 'INV_001',
+  description: 'Test Invoice',
+  amount: 10000,
+  currencyCode: 'NGN',
+  contractCode: 'your-contract-code',
+  customerEmail: 'customer@example.com',
+  customerName: 'John Doe',
+  customerPhoneNumber: '+2348012345678',
+  expiryDate: '2024-12-31',
+  redirectUrl: 'https://example.com/redirect',
+  paymentMethods: ['CARD', 'ACCOUNT_TRANSFER'],
+  invoiceItems: [
+    {
+      itemName: 'Test Item',
+      description: 'Test item description',
+      quantity: 1,
+      unitPrice: 10000,
+      subTotal: 10000,
+      vatRate: 7.5,
+      vatAmount: 750,
+      totalAmount: 10750,
+    },
+  ],
+});
+
+// Get invoice details
+const details = await monnifyService.invoices.getInvoiceDetails('INV_001');
+
+// Get invoice payment status
+const status = await monnifyService.invoices.getInvoicePaymentStatus('INV_001');
+
+// Send invoice reminder
+const reminder = await monnifyService.invoices.sendInvoiceReminder({
+  invoiceReference: 'INV_001',
+  message: 'Please complete your payment',
+});
+
+// Cancel invoice
+const cancelled = await monnifyService.invoices.cancelInvoice({
+  invoiceReference: 'INV_001',
+  reason: 'Customer requested cancellation',
+});
+```
+
+### Settlements Service
+
+Manage settlements and payout configurations.
+
+```typescript
+// Get settlements list
+const settlements = await monnifyService.settlements.getSettlements({
+  pageSize: 10,
+  pageNumber: 1,
+  fromDate: '2024-01-01',
+  toDate: '2024-12-31',
+});
+
+// Get settlement summary
+const summary = await monnifyService.settlements.getSettlementSummary({
+  fromDate: '2024-01-01',
+  toDate: '2024-12-31',
+});
+
+// Create settlement configuration
+const config = await monnifyService.settlements.createSettlementConfiguration({
+  bankCode: '044',
+  accountNumber: '1234567890',
+  accountName: 'Test Account',
+  isDefault: true,
+});
+
+// Get settlement configurations
+const configurations = await monnifyService.settlements.getSettlementConfigurations();
+
+// Initiate settlement payout
+const payout = await monnifyService.settlements.initiateSettlementPayout({
+  settlementReference: 'SETTLE_001',
+  payoutMethod: 'BANK_TRANSFER',
+  destinationAccount: '1234567890',
+  destinationBankCode: '044',
+  destinationAccountName: 'Test Account',
+});
+```
+
 ## Async Configuration
 
 For dynamic configuration (e.g., from environment variables):
@@ -293,6 +423,26 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - 📖 [Monnify API Documentation](https://developers.monnify.com/)
 - 🐛 [Report Issues](https://github.com/kellslte/nestjs-monnify/issues)
 - 💬 [Discussions](https://github.com/kellslte/nestjs-monnify/discussions)
+
+## New Services Added
+
+### Sub-Accounts Service
+- **Create Sub-Accounts**: Set up sub-accounts for revenue sharing
+- **Manage Sub-Accounts**: Update, deactivate, and reactivate sub-accounts
+- **Track Transactions**: Monitor sub-account transactions and settlements
+- **Balance Management**: Check sub-account balances and statements
+
+### Invoices Service
+- **Invoice Creation**: Generate professional invoices with line items
+- **Invoice Management**: Update, cancel, and track invoice status
+- **Payment Tracking**: Monitor invoice payment status and transactions
+- **Customer Communication**: Send reminders and notifications
+
+### Settlements Service
+- **Settlement Tracking**: Monitor settlement status and history
+- **Configuration Management**: Set up settlement bank accounts
+- **Payout Processing**: Initiate and track settlement payouts
+- **Reporting**: Generate settlement summaries and reports
 
 ## Changelog
 

@@ -5,6 +5,9 @@ import { CollectionsService } from './services/collections.service';
 import { DisbursementsService } from './services/disbursements.service';
 import { WalletsService } from './services/wallets.service';
 import { VerificationService } from './services/verification.service';
+import { SubAccountsService } from './services/sub_accounts.service';
+import { InvoicesService } from './services/invoices.service';
+import { SettlementsService } from './services/settlements.service';
 
 @Injectable()
 export class MonnifyService {
@@ -12,6 +15,9 @@ export class MonnifyService {
   public readonly disbursements: DisbursementsService;
   public readonly wallets: WalletsService;
   public readonly verification: VerificationService;
+  public readonly subAccounts: SubAccountsService;
+  public readonly invoices: InvoicesService;
+  public readonly settlements: SettlementsService;
 
   constructor(
     @Inject(MONNIFY_MODULE_OPTIONS)
@@ -21,6 +27,9 @@ export class MonnifyService {
     this.disbursements = new DisbursementsService(this.options);
     this.wallets = new WalletsService(this.options);
     this.verification = new VerificationService(this.options);
+    this.subAccounts = new SubAccountsService(this.options);
+    this.invoices = new InvoicesService(this.options);
+    this.settlements = new SettlementsService(this.options);
   }
 
   /**

@@ -233,4 +233,154 @@ export class VerificationService {
             throw error;
         }
     }
+
+    // Sub Accounts Examples
+    async manageSubAccounts() {
+        try {
+            // Create a sub-account
+            const subAccount = await this.monnifyService.subAccounts.createSubAccount({
+                subAccountCode: 'SUB_001',
+                subAccountName: 'Test Sub Account',
+                email: 'subaccount@example.com',
+                mobileNumber: '+2348012345678',
+                splitPercentage: 10,
+                feePercentage: 2,
+                feeBearer: true,
+                splitType: 'PERCENTAGE',
+                currencyCode: 'NGN',
+                contractCode: 'your-contract-code',
+            });
+
+            console.log('Sub-account created:', subAccount.responseBody);
+
+            // Get sub-account details
+            const details = await this.monnifyService.subAccounts.getSubAccountDetails('SUB_001');
+            console.log('Sub-account details:', details.responseBody);
+
+            // Get sub-account balance
+            const balance = await this.monnifyService.subAccounts.getSubAccountBalance('SUB_001');
+            console.log('Sub-account balance:', balance.responseBody);
+
+            // Get sub-account transactions
+            const transactions = await this.monnifyService.subAccounts.getSubAccountTransactions({
+                subAccountCode: 'SUB_001',
+                pageSize: 10,
+                pageNumber: 1,
+            });
+            console.log('Sub-account transactions:', transactions.responseBody);
+
+            return {
+                subAccount: subAccount.responseBody,
+                details: details.responseBody,
+                balance: balance.responseBody,
+                transactions: transactions.responseBody,
+            };
+        } catch (error) {
+            console.error('Sub-account management failed:', error);
+            throw error;
+        }
+    }
+
+    // Invoices Examples
+    async manageInvoices() {
+        try {
+            // Create an invoice
+            const invoice = await this.monnifyService.invoices.createInvoice({
+                invoiceReference: 'INV_001',
+                description: 'Test Invoice',
+                amount: 10000,
+                currencyCode: 'NGN',
+                contractCode: 'your-contract-code',
+                customerEmail: 'customer@example.com',
+                customerName: 'John Doe',
+                customerPhoneNumber: '+2348012345678',
+                expiryDate: '2024-12-31',
+                redirectUrl: 'https://example.com/redirect',
+                paymentMethods: ['CARD', 'ACCOUNT_TRANSFER'],
+                invoiceItems: [
+                    {
+                        itemName: 'Test Item',
+                        description: 'Test item description',
+                        quantity: 1,
+                        unitPrice: 10000,
+                        subTotal: 10000,
+                        vatRate: 7.5,
+                        vatAmount: 750,
+                        totalAmount: 10750,
+                    },
+                ],
+            });
+
+            console.log('Invoice created:', invoice.responseBody);
+
+            // Get invoice details
+            const details = await this.monnifyService.invoices.getInvoiceDetails('INV_001');
+            console.log('Invoice details:', details.responseBody);
+
+            // Get invoice payment status
+            const status = await this.monnifyService.invoices.getInvoicePaymentStatus('INV_001');
+            console.log('Invoice payment status:', status.responseBody);
+
+            // Send invoice reminder
+            const reminder = await this.monnifyService.invoices.sendInvoiceReminder({
+                invoiceReference: 'INV_001',
+                message: 'Please complete your payment',
+            });
+            console.log('Invoice reminder sent:', reminder.responseBody);
+
+            return {
+                invoice: invoice.responseBody,
+                details: details.responseBody,
+                status: status.responseBody,
+                reminder: reminder.responseBody,
+            };
+        } catch (error) {
+            console.error('Invoice management failed:', error);
+            throw error;
+        }
+    }
+
+    // Settlements Examples
+    async manageSettlements() {
+        try {
+            // Get settlements list
+            const settlements = await this.monnifyService.settlements.getSettlements({
+                pageSize: 10,
+                pageNumber: 1,
+                fromDate: '2024-01-01',
+                toDate: '2024-12-31',
+            });
+            console.log('Settlements:', settlements.responseBody);
+
+            // Get settlement summary
+            const summary = await this.monnifyService.settlements.getSettlementSummary({
+                fromDate: '2024-01-01',
+                toDate: '2024-12-31',
+            });
+            console.log('Settlement summary:', summary.responseBody);
+
+            // Create settlement configuration
+            const config = await this.monnifyService.settlements.createSettlementConfiguration({
+                bankCode: '044',
+                accountNumber: '1234567890',
+                accountName: 'Test Account',
+                isDefault: true,
+            });
+            console.log('Settlement configuration created:', config.responseBody);
+
+            // Get settlement configurations
+            const configurations = await this.monnifyService.settlements.getSettlementConfigurations();
+            console.log('Settlement configurations:', configurations.responseBody);
+
+            return {
+                settlements: settlements.responseBody,
+                summary: summary.responseBody,
+                config: config.responseBody,
+                configurations: configurations.responseBody,
+            };
+        } catch (error) {
+            console.error('Settlement management failed:', error);
+            throw error;
+        }
+    }
 }

@@ -4,3 +4,6 @@ export * from './common.interface';
 export * from './collections.interface';
 export * from './disbursements.interface';
 export * from './wallets.interface';
+export * from './sub-accounts.interface';
+export * from './invoices.interface';
+export * from './settlements.interface';
