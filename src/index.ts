@@ -10,6 +10,7 @@ export { VerificationService } from './services/verification.service';
 export { SubAccountsService } from './services/sub_accounts.service';
 export { InvoicesService } from './services/invoices.service';
 export { SettlementsService } from './services/settlements.service';
+export { TransactionsService } from './services/transactions.service';
 
 // Interface exports
 export * from './interfaces';

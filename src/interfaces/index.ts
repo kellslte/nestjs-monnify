@@ -7,3 +7,4 @@ export * from './wallets.interface';
 export * from './sub-accounts.interface';
 export * from './invoices.interface';
 export * from './settlements.interface';
+export * from './transactions.interface';

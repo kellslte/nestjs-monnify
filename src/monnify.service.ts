@@ -8,6 +8,7 @@ import { VerificationService } from './services/verification.service';
 import { SubAccountsService } from './services/sub_accounts.service';
 import { InvoicesService } from './services/invoices.service';
 import { SettlementsService } from './services/settlements.service';
+import { TransactionsService } from './services/transactions.service';
 
 @Injectable()
 export class MonnifyService {
@@ -18,6 +19,7 @@ export class MonnifyService {
   public readonly subAccounts: SubAccountsService;
   public readonly invoices: InvoicesService;
   public readonly settlements: SettlementsService;
+  public readonly transactions: TransactionsService;
 
   constructor(
     @Inject(MONNIFY_MODULE_OPTIONS)
@@ -30,6 +32,7 @@ export class MonnifyService {
     this.subAccounts = new SubAccountsService(this.options);
     this.invoices = new InvoicesService(this.options);
     this.settlements = new SettlementsService(this.options);
+    this.transactions = new TransactionsService(this.options);
   }
 
   /**

@@ -10,6 +10,13 @@ export const MONNIFY_ENDPOINTS = {
   GET_ALL_TRANSACTIONS: '/api/v1/merchant/transactions/list',
   GET_TRANSACTION_LOGS: '/api/v1/merchant/transactions/transaction-log',
 
+  // Transactions
+  REFUND_TRANSACTION: '/api/v1/merchant/transactions/refund',
+  PARTIAL_REFUND_TRANSACTION: '/api/v1/merchant/transactions/partial-refund',
+  VERIFY_TRANSACTION: '/api/v1/merchant/transactions/verify',
+  GET_TRANSACTION_SUMMARY: '/api/v1/merchant/transactions/summary',
+  GET_TRANSACTION_ANALYTICS: '/api/v1/merchant/transactions/analytics',
+
   // Customer Reserved Account
   CREATE_RESERVED_ACCOUNT: '/api/v1/bank-transfer/reserved-accounts/create',
   GET_RESERVED_ACCOUNTS: '/api/v1/bank-transfer/reserved-accounts',

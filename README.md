@@ -1,10 +1,10 @@
 # @scwar/nestjs-monnify
 
-A comprehensive NestJS module for integrating with the [Monnify API](https://developers.monnify.com/). This package provides a clean, type-safe interface for all Monnify services including collections, disbursements, wallets, customer verification, sub-accounts, invoices, and settlements.
+A comprehensive NestJS module for integrating with the [Monnify API](https://developers.monnify.com/). This package provides a clean, type-safe interface for all Monnify services including collections, disbursements, wallets, customer verification, sub-accounts, invoices, settlements, and transactions.
 
 ## Features
 
-- 🚀 **Full Monnify API Coverage** - Collections, Disbursements, Wallets, Verification, Sub-Accounts, Invoices, Settlements
+- 🚀 **Full Monnify API Coverage** - Collections, Disbursements, Wallets, Verification, Sub-Accounts, Invoices, Settlements, Transactions
 - 🔒 **Type Safety** - Full TypeScript support with comprehensive interfaces
 - 🏗️ **NestJS Native** - Built specifically for NestJS applications
 - 🔄 **Automatic Retries** - Configurable retry logic with exponential backoff
@@ -328,6 +328,89 @@ const payout = await monnifyService.settlements.initiateSettlementPayout({
   destinationAccount: '1234567890',
   destinationBankCode: '044',
   destinationAccountName: 'Test Account',
+});
+```
+
+### Transactions Service
+
+Comprehensive transaction management, monitoring, and analytics.
+
+```typescript
+// Get transaction status
+const status = await monnifyService.transactions.getTransactionStatus('TXN_REF_123');
+
+// Get all transactions with filters
+const transactions = await monnifyService.transactions.getAllTransactions({
+  pageSize: 10,
+  pageNumber: 1,
+  fromDate: '2024-01-01',
+  toDate: '2024-12-31',
+  status: 'PAID',
+  paymentMethod: 'CARD',
+});
+
+// Get transaction logs
+const logs = await monnifyService.transactions.getTransactionLogs({
+  pageSize: 10,
+  pageNumber: 1,
+  fromDate: '2024-01-01',
+  toDate: '2024-12-31',
+});
+
+// Get transactions by status
+const successful = await monnifyService.transactions.getSuccessfulTransactions(10, 1);
+const failed = await monnifyService.transactions.getFailedTransactions(10, 1);
+const pending = await monnifyService.transactions.getPendingTransactions(10, 1);
+
+// Get transactions by payment method
+const cardTransactions = await monnifyService.transactions.getTransactionsByPaymentMethod('CARD', 10, 1);
+
+// Get transactions by date range
+const dateRangeTransactions = await monnifyService.transactions.getTransactionsByDateRange(
+  '2024-01-01',
+  '2024-12-31',
+  10,
+  1
+);
+
+// Get transactions by customer email
+const customerTransactions = await monnifyService.transactions.getTransactionsByCustomerEmail(
+  'customer@example.com',
+  10,
+  1
+);
+
+// Verify transaction
+const verification = await monnifyService.transactions.verifyTransaction({
+  transactionReference: 'TXN_REF_123',
+  amount: 10000, // Optional: verify specific amount
+});
+
+// Get transaction summary
+const summary = await monnifyService.transactions.getTransactionSummary(
+  '2024-01-01',
+  '2024-12-31'
+);
+
+// Get transaction analytics
+const analytics = await monnifyService.transactions.getTransactionAnalytics(
+  '2024-01-01',
+  '2024-12-31'
+);
+
+// Refund transactions
+const fullRefund = await monnifyService.transactions.refundTransaction({
+  transactionReference: 'TXN_REF_123',
+  refundAmount: 10000,
+  refundReason: 'Customer requested refund',
+  customerNote: 'Refund processed as requested',
+});
+
+const partialRefund = await monnifyService.transactions.partialRefundTransaction({
+  transactionReference: 'TXN_REF_456',
+  refundAmount: 5000,
+  refundReason: 'Partial refund for damaged item',
+  customerNote: 'Partial refund for damaged item',
 });
 ```
 

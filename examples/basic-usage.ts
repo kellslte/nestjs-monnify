@@ -383,4 +383,134 @@ export class VerificationService {
             throw error;
         }
     }
+
+    // Transactions Examples
+    async manageTransactions() {
+        try {
+            // Get transaction status
+            const status = await this.monnifyService.transactions.getTransactionStatus('TXN_REF_123');
+            console.log('Transaction status:', status.responseBody);
+
+            // Get all transactions with filters
+            const allTransactions = await this.monnifyService.transactions.getAllTransactions({
+                pageSize: 10,
+                pageNumber: 1,
+                fromDate: '2024-01-01',
+                toDate: '2024-12-31',
+                status: 'PAID',
+                paymentMethod: 'CARD',
+            });
+            console.log('All transactions:', allTransactions.responseBody);
+
+            // Get transaction logs
+            const logs = await this.monnifyService.transactions.getTransactionLogs({
+                pageSize: 10,
+                pageNumber: 1,
+                fromDate: '2024-01-01',
+                toDate: '2024-12-31',
+            });
+            console.log('Transaction logs:', logs.responseBody);
+
+            // Get transactions by status
+            const successfulTransactions = await this.monnifyService.transactions.getSuccessfulTransactions(10, 1);
+            console.log('Successful transactions:', successfulTransactions.responseBody);
+
+            const failedTransactions = await this.monnifyService.transactions.getFailedTransactions(10, 1);
+            console.log('Failed transactions:', failedTransactions.responseBody);
+
+            const pendingTransactions = await this.monnifyService.transactions.getPendingTransactions(10, 1);
+            console.log('Pending transactions:', pendingTransactions.responseBody);
+
+            // Get transactions by payment method
+            const cardTransactions = await this.monnifyService.transactions.getTransactionsByPaymentMethod('CARD', 10, 1);
+            console.log('Card transactions:', cardTransactions.responseBody);
+
+            // Get transactions by date range
+            const dateRangeTransactions = await this.monnifyService.transactions.getTransactionsByDateRange(
+                '2024-01-01',
+                '2024-12-31',
+                10,
+                1
+            );
+            console.log('Date range transactions:', dateRangeTransactions.responseBody);
+
+            // Get transactions by customer email
+            const customerTransactions = await this.monnifyService.transactions.getTransactionsByCustomerEmail(
+                'customer@example.com',
+                10,
+                1
+            );
+            console.log('Customer transactions:', customerTransactions.responseBody);
+
+            // Verify transaction
+            const verification = await this.monnifyService.transactions.verifyTransaction({
+                transactionReference: 'TXN_REF_123',
+                amount: 10000, // Optional: verify specific amount
+            });
+            console.log('Transaction verification:', verification.responseBody);
+
+            // Get transaction summary
+            const summary = await this.monnifyService.transactions.getTransactionSummary(
+                '2024-01-01',
+                '2024-12-31'
+            );
+            console.log('Transaction summary:', summary.responseBody);
+
+            // Get transaction analytics
+            const analytics = await this.monnifyService.transactions.getTransactionAnalytics(
+                '2024-01-01',
+                '2024-12-31'
+            );
+            console.log('Transaction analytics:', analytics.responseBody);
+
+            return {
+                status: status.responseBody,
+                allTransactions: allTransactions.responseBody,
+                logs: logs.responseBody,
+                successfulTransactions: successfulTransactions.responseBody,
+                failedTransactions: failedTransactions.responseBody,
+                pendingTransactions: pendingTransactions.responseBody,
+                cardTransactions: cardTransactions.responseBody,
+                dateRangeTransactions: dateRangeTransactions.responseBody,
+                customerTransactions: customerTransactions.responseBody,
+                verification: verification.responseBody,
+                summary: summary.responseBody,
+                analytics: analytics.responseBody,
+            };
+        } catch (error) {
+            console.error('Transaction management failed:', error);
+            throw error;
+        }
+    }
+
+    // Transaction Refund Examples
+    async manageTransactionRefunds() {
+        try {
+            // Full refund
+            const fullRefund = await this.monnifyService.transactions.refundTransaction({
+                transactionReference: 'TXN_REF_123',
+                refundAmount: 10000, // Full amount in kobo
+                refundReason: 'Customer requested refund',
+                customerNote: 'Refund processed as requested',
+            });
+            console.log('Full refund:', fullRefund.responseBody);
+
+            // Partial refund
+            const partialRefund = await this.monnifyService.transactions.partialRefundTransaction({
+                transactionReference: 'TXN_REF_456',
+                refundAmount: 5000, // Partial amount in kobo
+                refundReason: 'Partial refund for damaged item',
+                customerNote: 'Partial refund for damaged item',
+            });
+            console.log('Partial refund:', partialRefund.responseBody);
+
+            return {
+                fullRefund: fullRefund.responseBody,
+                partialRefund: partialRefund.responseBody,
+            };
+        } catch (error) {
+            console.error('Transaction refund management failed:', error);
+            throw error;
+        }
+    }
 }
